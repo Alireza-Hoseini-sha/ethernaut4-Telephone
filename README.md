@@ -8,7 +8,7 @@ The Telephone challenge demonstrates a critical vulnerability related to the dif
 
 The vulnerable contract has a `changeOwner` function that checks:
 
-```javascript
+```solidity
 if (tx.origin != msg.sender) {
   owner = _owner;
 }
@@ -37,7 +37,7 @@ We exploit this by creating an intermediary contract (`Attack.sol`) that calls t
 
 ## Attack Contract
 
-```javascript
+```solidity
 contract Attack {
     Telephone public telephone;
 
@@ -75,7 +75,7 @@ The attack is executed through the Foundry script which:
 
 To fix this vulnerability, the contract should use `msg.sender` instead of `tx.origin`:
 
-```javascript
+```solidity
 function changeOwner(address _owner) public {
     if (msg.sender == owner) {  // Use msg.sender instead of tx.origin
         owner = _owner;
